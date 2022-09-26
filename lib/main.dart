@@ -1,60 +1,35 @@
+import 'package:demo2/theme.dart';
+import 'package:demo2/video_player_screen.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(VideoApp());
+void main() => runApp(HomePage());
 
-class VideoApp extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  _VideoAppState createState() => _VideoAppState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _VideoAppState extends State<VideoApp> {
-  late VideoPlayerController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _controller = VideoPlayerController.network(
-        'https://zpmediatestcdn.azureedge.net/zuacademytestmedia/others/tutorial_videos/rich_dad_poor_dad_intro.mp4')
-      ..initialize().then((_) {
-        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-        setState(() {});
-      });
-  }
-
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Video Demo',
-      home: Scaffold(
-        body: Center(
-          child: _controller.value.isInitialized
-              ? AspectRatio(
-                  aspectRatio: _controller.value.aspectRatio,
-                  child: VideoPlayer(_controller),
-                )
-              : Container(),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            setState(() {
-              _controller.value.isPlaying
-                  ? _controller.pause()
-                  : _controller.play();
-            });
-          },
-          child: Icon(
-            _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-          ),
-        ),
+      home: VideoPlayerScreen(
+        items: [
+          PromoModel(
+            intentType: '',
+            intent:
+                'https://zpmediateststorageacc.blob.core.windows.net/zuacademytestmedia/others/tutorial_videos/1_Market%20Capitalisation.mp4',
+            altText: '',
+            apiOnCall: '',
+            dimensions: '',
+            imageUrl: '',
+            isFeature: false,
+            thumbNail: '',
+          )
+        ],
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
   }
 }
